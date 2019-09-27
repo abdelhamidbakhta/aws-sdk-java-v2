@@ -16,3 +16,6 @@ phases:
           mvn package
           mvn exec:exec -P mock-tests
         fi
+      - CURRENT_VERSION=`mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec`
+      - RELEASE_VERSION=`echo "$CURRENT_VERSION" | cut -d "-" -f1`
+      - scripts/finalize-release-changes --release-version $RELEASE_VERSION --release-date `TZ="America/Los_Angeles" date -I` --dry-run
